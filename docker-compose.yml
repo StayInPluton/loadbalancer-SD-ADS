@@ -1,0 +1,38 @@
+services:
+  app-01:
+    build: .
+    environment:
+      INSTANCE_ID: "app-01"
+      BG_COLOR: "#2563eb" 
+      TZ: "America/Sao_Paulo"
+    ports:
+      - "3001:3000"
+
+  app-02:
+    build: .
+    environment:
+      INSTANCE_ID: "app-02"
+      BG_COLOR: "#16a34a" 
+      TZ: "America/Sao_Paulo"
+    ports:
+      - "3002:3000"
+
+  app-03:
+    build: .
+    environment:
+      INSTANCE_ID: "app-03"
+      BG_COLOR: "#ea580c" 
+      TZ: "America/Sao_Paulo"
+    ports:
+      - "3003:3000"
+
+  load-balancer:
+    image: nginx:alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:80"
+    depends_on:
+      - app-01
+      - app-02
+      - app-03
